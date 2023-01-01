@@ -54,15 +54,15 @@ const displayProducts = (filteredProducts) => {
     .map(
       (product) =>
         `
-    <div class="product">
-       <img
-       src=${product.img}
-       alt=""
-       />
-       <span class="name">${product.name}</span>
-       <span class="priceText">$${product.price}</span>
-     </div>
- `
+         <div class="product">
+            <img
+            src=${product.img}
+            alt=""
+            />
+            <span class="name">${product.name}</span>
+            <span class="priceText">$${product.price}</span>
+          </div>
+      `
     )
     .join("");
 };
@@ -107,3 +107,22 @@ const setCategories = () => {
       : displayProducts(data.filter((item) => item.cat === selectedCat));
   });
 };
+
+const setPrices = () => {
+  const priceList = data.map((item) => item.price);
+  const minPrice = Math.min(...priceList);
+  const maxPrice = Math.max(...priceList);
+
+  priceRange.min = minPrice;
+  priceRange.max = maxPrice;
+  priceRange.value = maxPrice;
+  priceValue.textContent = "$" + maxPrice;
+
+  priceRange.addEventListener("input", (e) => {
+    priceValue.textContent = "$" + e.target.value;
+    displayProducts(data.filter((item) => item.price <= e.target.value));
+  });
+};
+
+setCategories();
+setPrices();
